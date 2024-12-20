@@ -41,6 +41,7 @@ jobs:
         run: |
           python -m pip install truffleHog
 
-      - name: Run TruffleHog for secrets detection
+      - name: Check for secrets
         run: |
-          trufflehog --json https://github.com/Kami6c/SecPipe.git
+          pip install trufflehog
+          trufflehog filesystem --directory .
