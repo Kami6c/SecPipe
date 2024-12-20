@@ -37,11 +37,10 @@ jobs:
       - name: Check dependencies for vulnerabilities
         run: safety check --full-report
 
-      - name: Install Git-Secrets
+      - name: Install TruffleHog
         run: |
-          sudo apt-get install git-secrets
-          git secrets --install
-          git secrets --register-aws
+          python -m pip install truffleHog
 
-      - name: Scan for secrets in the code
-        run: git secrets --scan
+      - name: Run TruffleHog for secrets detection
+        run: |
+          trufflehog --json https://github.com/Kami6c/SecPipe.git
