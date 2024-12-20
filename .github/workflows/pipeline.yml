@@ -38,10 +38,8 @@ jobs:
         run: safety check --full-report
 
       - name: Install TruffleHog
-        run: |
-          python -m pip install truffleHog
+        run: pip install trufflehog
 
-      - name: Check for secrets
+      - name: Check for secrets with TruffleHog
         run: |
-          pip install trufflehog
-          trufflehog filesystem --directory .
+          trufflehog --json https://github.com/${{ github.repository }}  # Use the GitHub repository URL
