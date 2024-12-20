@@ -1,0 +1,47 @@
+name: Python Secure Application
+
+on:
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * 0'  # Run every Sunday
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Bandit for SAST
+        run: pip install bandit
+
+      - name: Run Bandit SAST scan
+        run: bandit -r .
+
+      - name: Install Safety
+        run: pip install safety
+
+      - name: Check dependencies for vulnerabilities
+        run: safety check --full-report
+
+      - name: Install Git-Secrets
+        run: |
+          sudo apt-get install git-secrets
+          git secrets --install
+          git secrets --register-aws
+
+      - name: Scan for secrets in the code
+        run: git secrets --scan
