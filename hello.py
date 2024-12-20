@@ -1,1 +1,2 @@
-print("Hello, world!")
+api_key = "1234567890abcdef"
+print("Hello world!")
